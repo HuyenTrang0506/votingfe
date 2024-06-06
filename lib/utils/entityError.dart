@@ -1,11 +1,12 @@
 import 'dart:convert';
 
-UserError userErrorFromJson(String str) => UserError.fromJson(json.decode(str));
+EntityError userErrorFromJson(String str) =>
+    EntityError.fromJson(json.decode(str));
 
-String userErrorToJson(UserError data) => json.encode(data.toJson());
+String userErrorToJson(EntityError data) => json.encode(data.toJson());
 
-class UserError {
-  UserError({
+class EntityError {
+  EntityError({
     this.code,
     this.message,
   });
@@ -13,7 +14,7 @@ class UserError {
   int? code;
   String? message;
 
-  factory UserError.fromJson(Map<String, dynamic> json) => UserError(
+  factory EntityError.fromJson(Map<String, dynamic> json) => EntityError(
         code: json["code"] == null ? null : json["code"],
         message: json["message"] == null ? null : json["message"],
       );

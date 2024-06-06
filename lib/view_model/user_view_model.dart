@@ -1,45 +1,72 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/models/userError.dart';
+import 'package:flutter_application/utils/entityError.dart';
 import 'package:flutter_application/models/user.dart';
 import 'package:flutter_application/services/api_status.dart';
 import 'package:flutter_application/services/user_services.dart';
 
-import '../models/user.dart';
-
 class UsersViewModel extends ChangeNotifier {
-  
   bool _loading = false;
-  UserError? _userError;
+  EntityError? _userError;
 
   bool get loading => _loading;
   List<UserModel> _userListModel = [];
+  UserModel _selectedUser = UserModel();
+  UserModel _addingUser = UserModel();
+  //getter
   List<UserModel> get userListModel => _userListModel;
-  UserError? get userError => _userError;
-  setLoading(bool loading)async{
+  EntityError? get userError => _userError;
+    UserModel get selectedUser => _selectedUser;
+  UserModel get addingUser => _addingUser;
+  setLoading(bool loading) async {
     _loading = loading;
     //dont need call notifyListeners() everytime because when we set value of loading to false, it will update all the value of this object
     notifyListeners();
   }
-  setUserListModel(List<UserModel> userListModel){
+
+  setUserListModel(List<UserModel> userListModel) {
     _userListModel = userListModel;
-   
   }
-  setUserError(UserError userError){
+
+  setUserError(EntityError userError) {
     _userError = userError;
-  
   }
-   Future<void> getUsers() async {
-    setLoading(true);
-    var response = await UserServices.getUsers();
-    if (response is Success) {
-     setUserListModel(response.response as List<UserModel>);
-    } else if (response is Failure) {
-      UserError userError = UserError(code: response.code, message: response.errorResponse.toString());
+setSelectedUser(UserModel userModel) {
+    _selectedUser = userModel;
+  }
+
+  addUser() async {
+    if (!isValid()) {
+      return;
     }
+    _userListModel.add(addingUser);
+    _addingUser = UserModel();
+    notifyListeners();
+    return true;
   }
-  
-  @override
-  void dispose() {
-    super.dispose();
+
+  isValid() {
+    if (addingUser.fullname == null || addingUser.fullname!.isEmpty) {
+      return false;
+    }
+    if (addingUser.email == null || addingUser.email!.isEmpty) {
+      return false;
+    }
+    return true;
   }
+  Future<void> getUsers() async {
+    setLoading(true);
+
+    var response = await UserServices.getUsers();
+
+    if (response is Success) {
+      print("ngon");
+      setUserListModel(response.response as List<UserModel>);
+    } else if (response is Failure) {
+      print("ngu");
+      EntityError userError = EntityError(
+          code: response.code, message: response.errorResponse.toString());
+    }
+    setLoading(false);
+  }
+
 }

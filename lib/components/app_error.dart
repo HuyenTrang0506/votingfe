@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppError extends StatelessWidget {
   final String? errortxt;
-  AppError({ this.errortxt});
+  const AppError({super.key,  this.errortxt});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class AppError extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           errortxt!,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.red,
             fontSize: 18.0,
           ),

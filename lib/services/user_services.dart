@@ -9,10 +9,12 @@ class UserServices {
   static Future<Object> getUsers() async {
     try {
       var url = Uri.parse(USER_LIST);
+
       final response = await http.get(url);
+      print(response.body);
       print(USER_LIST);
       if (response.statusCode == 200) {
-        return Success(response: userModelFromJson(response.body));
+        return Success(response: userListModelFromJson(response.body));
       } else {
         return Failure(
             code: USER_INVALID_RESPONSE, errorResponse: 'Invalid response');

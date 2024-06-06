@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:provider/provider.dart';
+import 'package:flutter_application/view/auth/welcome_screen.dart';
+import 'package:flutter_application/view_model/login_register_view_model.dart';
 import 'package:flutter_application/view_model/user_view_model.dart';
-import 'package:flutter_application/view/home_screen.dart';
+import 'package:provider/provider.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -18,24 +19,19 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
     ]);
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_)=> UsersViewModel())
-      ],
-      child: MaterialApp(
-      title: 'Voting App',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        brightness: Brightness.dark,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: HomeScreen(),
-    )
-    
-    );
+        providers: [
+          ChangeNotifierProvider(create: (_) => UsersViewModel()),
+          ChangeNotifierProvider(create: (_) => AuthViewModel())
+        ],
+        child: MaterialApp(
+          title: 'Voting App',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+            brightness: Brightness.dark,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+          ),
+          home: const WelcomeScreen(),
+        ));
   }
 }
-
-
-  
-  
