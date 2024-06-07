@@ -10,6 +10,7 @@ class UserModel {
   final int? id;
   String? fullname;
   String? email;
+  String? accessToken;
   String? avatarUrl;
   List<String>? roles;
   String? password;
@@ -18,6 +19,7 @@ class UserModel {
     this.id,
     this.fullname,
     this.email,
+    this.accessToken,
     this.avatarUrl,
     this.roles,
     this.password,
@@ -28,6 +30,7 @@ class UserModel {
       id: json["id"],
       fullname: json["fullname"],
       email: json["email"],
+      accessToken: json["accessToken"],
       avatarUrl: json["avatarUrl"],
       roles: json["roles"] == null
           ? []
@@ -41,6 +44,7 @@ class UserModel {
         "id": id,
         "fullname": fullname,
         "email": email,
+        "accessToken": accessToken,
         "avatarUrl": avatarUrl,
         "roles": roles == null ? [] : List<dynamic>.from(roles!.map((x) => x)),
         "password":

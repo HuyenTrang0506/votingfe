@@ -11,7 +11,6 @@ class AuthViewModel extends ChangeNotifier {
 
   bool get isAuthenticated => _isAuthenticated;
 
- 
   bool get rememberPassword => _rememberPassword;
   GlobalKey<FormState> get formKey => _formKey;
   bool _loading = false;
@@ -21,18 +20,9 @@ class AuthViewModel extends ChangeNotifier {
   bool get loading => _loading;
   EntityError? get authError => _authError;
   UserModel get userModel => _userModel;
-  void login() {
-    _isAuthenticated = true;
-    notifyListeners();
-  }
 
-  void logout() {
-    _isAuthenticated = false;
-    notifyListeners();
-  }
   setLoading(bool loading) async {
     _loading = loading;
-    notifyListeners();
   }
 
   setAuthError(EntityError authError) {
@@ -41,22 +31,22 @@ class AuthViewModel extends ChangeNotifier {
 
   void setFullName(String fullName) {
     _userModel.fullname = fullName;
-    notifyListeners();
   }
 
   void setEmail(String email) {
     _userModel.email = email;
-    notifyListeners();
   }
 
   void setPassword(String pass) {
     _userModel.password = pass;
-    notifyListeners();
   }
 
   void toggleRememberPassword(bool? value) {
     _rememberPassword = !_rememberPassword;
-    notifyListeners();
+  }
+
+  setAuthenticated(bool isAuthenticated) {
+    _isAuthenticated = isAuthenticated;
   }
 
   setUserModel(UserModel userModel) {
@@ -78,21 +68,25 @@ class AuthViewModel extends ChangeNotifier {
     setLoading(false);
   }
 
-  Future<void> signIn() async {
+  Future<void> signIn(UserModel user) async {
     setLoading(true);
-    print("login neeeee");
-    
-    var response = await AuthService.signIn(_userModel);
 
+    var response = await AuthService.signIn(_userModel);
+    setAuthenticated(true);
+
+    print(response);
     if (response is Success) {
       setUserModel(response.response as UserModel);
-      login();
-      
     } else if (response is Failure) {
       EntityError authError = EntityError(
           code: response.code, message: response.errorResponse.toString());
     }
 
     setLoading(false);
+  }
+
+  void logout() {
+    _isAuthenticated = false;
+    notifyListeners();
   }
 }

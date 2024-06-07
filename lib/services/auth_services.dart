@@ -42,8 +42,10 @@ class AuthService {
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(user.toJson()),
       );
-      print(response.body);
+      print(user.email);
       if (response.statusCode == 200) {
+        print("thanh cong r ne");
+        print(response.body);
         return Success(response: UserModel.fromJson(jsonDecode(response.body)));
       } else {
         return Failure(

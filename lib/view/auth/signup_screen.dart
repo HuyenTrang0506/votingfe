@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application/components/custom_scaffold.dart';
 import 'package:flutter_application/view/auth/signin_screen.dart';
-import 'package:flutter_application/view_model/login_register_view_model.dart';
+import 'package:flutter_application/view_model/auth_view_model.dart';
 
 
 class SignUpScreen extends StatelessWidget {

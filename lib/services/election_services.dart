@@ -1,27 +1,22 @@
 import 'dart:io';
-
-import 'package:flutter_application/models/user.dart';
+import 'package:flutter_application/models/election.dart';
 import 'package:flutter_application/services/api_status.dart';
 import 'package:flutter_application/utils/constant.dart';
-import 'package:flutter_application/view_model/auth_view_model.dart';
-import 'package:flutter_application/view_model/user_view_model.dart';
-import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
-class UserServices {
-   
-  static Future<Object> getUsers(String accessToken) async {
+class ElectionServices {
+  static Future<Object> getElections(String accessToken) async {
     try {
-      var url = Uri.parse(USER_LIST);
+      var url = Uri.parse(ELECTION_LIST);
    
       final response = await http.get(url,headers: 
       {"Content-Type": "application/json",
         "Authorization": "Bearer $accessToken",
       });
       print(response.body);
-      print(USER_LIST);
+    
       if (response.statusCode == 200) {
-        return Success(response: userListModelFromJson(response.body));
+        return Success(response: electionListModelFromJson(response.body));
       } else {
         return Failure(
             code: USER_INVALID_RESPONSE, errorResponse: 'Invalid response');

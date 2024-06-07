@@ -53,13 +53,13 @@ setSelectedUser(UserModel userModel) {
     }
     return true;
   }
-  Future<void> getUsers() async {
+  Future<void> getUsers(String accessToken) async {
     setLoading(true);
 
-    var response = await UserServices.getUsers();
+    var response = await UserServices.getUsers(accessToken);
 
     if (response is Success) {
-      print("ngon");
+    
       setUserListModel(response.response as List<UserModel>);
     } else if (response is Failure) {
       print("ngu");
