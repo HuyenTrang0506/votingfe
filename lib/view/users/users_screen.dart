@@ -45,7 +45,9 @@ class _UsersScreenState extends State<UsersScreen> {
           ),
           IconButton(
             onPressed: () async {
-              String? accessToken = context.read<AuthViewModel>().userModel.accessToken;
+              String? accessToken =
+                  context.read<AuthViewModel>().userModel.accessToken;
+
               if (accessToken != null) {
                 usersViewModel.getUsers(accessToken);
               }
@@ -83,8 +85,19 @@ class _UsersScreenState extends State<UsersScreen> {
             userModel: userModel,
             onTap: () async {
               usersViewModel.setSelectedUser(userModel);
-              // openUserDetails(context);
               Navigator.pushNamed(context, '/detailUser');
+            },
+            onDelete: () {
+              String? accessToken =
+                  context.read<AuthViewModel>().userModel.accessToken;
+              if (accessToken != null) {
+                usersViewModel.setSelectedUser(userModel);
+                print("delete ");
+
+                usersViewModel.deleteUser(accessToken, userModel.id.toString());
+                print(usersViewModel);
+              
+              }
             },
           );
         },

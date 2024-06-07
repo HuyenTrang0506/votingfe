@@ -36,7 +36,7 @@ class ElectionViewModel extends ChangeNotifier {
     _selectedElection = electionModel;
   }
 
-  addElection() async {
+  addElection(ElectionModel newElection) async {
     if (!isValid()) {
       return;
     }
@@ -60,6 +60,32 @@ class ElectionViewModel extends ChangeNotifier {
 
     if (response is Success) {
       setElectionListModel(response.response as List<ElectionModel>);
+    } else if (response is Failure) {
+      EntityError electionError = EntityError(
+          code: response.code, message: response.errorResponse.toString());
+      setElectionError(electionError);
+    }
+    setLoading(false);
+  }
+  Future<void> saveElection(String accessToken, ElectionModel election) async {
+    setLoading(true);
+    var response = await ElectionServices.saveElection(accessToken, election);
+    if (response is Success) {
+      _electionListModel.add(response.response as ElectionModel);
+    } else if (response is Failure) {
+      EntityError electionError = EntityError(
+          code: response.code, message: response.errorResponse.toString());
+      setElectionError(electionError);
+    }
+    setLoading(false);
+  }
+
+  Future<void> deleteElection(String accessToken, String electionId) async {
+    setLoading(true);
+    var response =
+        await ElectionServices.deleteElection(accessToken, electionId);
+    if (response is Success) {
+      _electionListModel.removeWhere((election) => election.id.toString() == electionId);
     } else if (response is Failure) {
       EntityError electionError = EntityError(
           code: response.code, message: response.errorResponse.toString());

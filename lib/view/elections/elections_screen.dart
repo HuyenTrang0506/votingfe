@@ -42,6 +42,7 @@ class _ElectionScreenState extends State<ElectionScreen> {
         actions: [
           IconButton(
             onPressed: () async {
+              electionsViewModel.setSelectedElection(new ElectionModel());
               Navigator.pushNamed(context, '/createElection');
             },
             icon: Icon(Icons.add),
@@ -89,6 +90,15 @@ class _ElectionScreenState extends State<ElectionScreen> {
               electionsViewModel.setSelectedElection(electionModel);
               // openUserDetails(context);
               Navigator.pushNamed(context, '/modifyElection');
+            },currentUser: context.read<AuthViewModel>().userModel,
+            onDelete: () async {
+              String? accessToken =
+                  context.read<AuthViewModel>().userModel.accessToken;
+              if (accessToken != null) {
+                
+                electionsViewModel.deleteElection(
+                    accessToken, electionModel.id.toString());
+              }
             },
           );
         },

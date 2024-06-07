@@ -51,7 +51,7 @@ class MainWrapperState extends State<MainWrapper> {
             NavigationDestination(
               selectedIcon: Icon(Icons.house),
               icon: Icon(Icons.house_outlined),
-              label: 'Home',
+              label: 'User',
             ),
             NavigationDestination(
               selectedIcon: Icon(Icons.add),

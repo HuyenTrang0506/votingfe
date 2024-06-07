@@ -71,11 +71,15 @@ class AuthViewModel extends ChangeNotifier {
   Future<void> signIn(UserModel user) async {
     setLoading(true);
 
-    var response = await AuthService.signIn(_userModel);
-    setAuthenticated(true);
 
+var response = await AuthService.signIn(user);
+    setAuthenticated(true);
+   
     print(response);
+    
     if (response is Success) {
+      _isAuthenticated = true;
+      notifyListeners();
       setUserModel(response.response as UserModel);
     } else if (response is Failure) {
       EntityError authError = EntityError(

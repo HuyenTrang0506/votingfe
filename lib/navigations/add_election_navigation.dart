@@ -24,7 +24,7 @@ class AddElectionNavigatorState extends State<AddElectionNavigator> {
           settings: settings,
           builder: (BuildContext context) {
           
-            return CreateScreen();
+            return CreatePollScreen();
           },
         );
       },

@@ -30,6 +30,19 @@ class UserDetailsScreen extends StatelessWidget {
               usersViewModel.selectedUser.avatarUrl ?? '',
               style: TextStyle(color: Colors.black),
             ),
+             Text(
+              'Roles:',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+           ListView.builder(
+              shrinkWrap: true,
+              itemCount: usersViewModel.selectedUser.roles?.length ?? 0,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(usersViewModel.selectedUser.roles![index]),
+                );
+              },
+            ),
           ],
         ),
       ),
