@@ -7,6 +7,7 @@ class ElectionListRow extends StatelessWidget {
   final UserModel currentUser;
   final Function onTap;
   final Function onDelete;
+  
 
   ElectionListRow(
       {required this.election,
@@ -16,6 +17,7 @@ class ElectionListRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     final now = DateTime.now();
     return InkWell(
       onTap: onTap as void Function()?,
       child: Row(
@@ -30,13 +32,15 @@ class ElectionListRow extends StatelessWidget {
               Text('End: ${election.endTime}'),
             ],
           ),
-          _buildState(election),
-          currentUser.roles!.contains('ROLE_ADMIN')
-              ? IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: onDelete as void Function()?,
-                )
-              : Container(),
+        _buildState(election),       
+         
+          if (currentUser.roles!.contains('ROLE_ADMIN'))
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: onDelete as void Function()?,
+            )
+          else
+            Container(),
         ],
       ),
     );
@@ -49,13 +53,13 @@ class ElectionListRow extends StatelessWidget {
 
     if (election.startTime != null && election.endTime != null) {
       if (now.isBefore(election.startTime!)) {
-        state = 'Have taken';
+        state = 'Upcoming';
         color = Colors.blue;
       } else if (now.isAfter(election.endTime!)) {
         state = 'Overdue';
         color = Colors.red;
       } else {
-        state = 'On going';
+        state = 'Ongoing';
         color = Colors.green;
       }
     } else {

@@ -87,9 +87,16 @@ class _ElectionScreenState extends State<ElectionScreen> {
           return ElectionListRow(
             election: electionModel,
             onTap: () async {
-              electionsViewModel.setSelectedElection(electionModel);
-              // openUserDetails(context);
-              Navigator.pushNamed(context, '/modifyElection');
+              UserModel currentUser = context.read<AuthViewModel>().userModel;
+               electionsViewModel.setSelectedElection(electionModel);
+               if  (currentUser.roles!.contains('ROLE_ADMIN')){                 
+                  Navigator.pushNamed(context, '/modifyElection');
+               } else{
+                  electionsViewModel.setSelectedElection(electionModel);
+                   Navigator.pushNamed(context, '/joinElection');
+               }
+              
+             
             },currentUser: context.read<AuthViewModel>().userModel,
             onDelete: () async {
               String? accessToken =

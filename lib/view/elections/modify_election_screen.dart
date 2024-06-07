@@ -4,15 +4,14 @@ import 'package:flutter_application/utils/alert_dialogs.dart';
 import 'package:flutter_application/view_model/auth_view_model.dart';
 import 'package:flutter_application/view_model/election_view_model.dart';
 import 'package:provider/provider.dart';
-
 import '../../models/election.dart';
 
-class CreatePollScreen extends StatefulWidget {
+class ModifyPollScreen extends StatefulWidget {
   @override
-  _CreatePollScreenState createState() => _CreatePollScreenState();
+  _ModifyPollScreenState createState() => _ModifyPollScreenState();
 }
 
-class _CreatePollScreenState extends State<CreatePollScreen> {
+class _ModifyPollScreenState extends State<ModifyPollScreen> {
   final _formKey = GlobalKey<FormState>();
   ElectionModel election = ElectionModel(listCandidates: []);
   TextEditingController titleController = TextEditingController();
@@ -28,13 +27,19 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
   @override
   void initState() {
     super.initState();
-    _addCandidate();
+    election = context.read<ElectionViewModel>().selectedElection;
+    titleController.text = election.title!;
+    descriptionController.text = election.description!;
+    _startDate = election.startTime!;
+    _endDate = election.endTime!;
+    _startTime = TimeOfDay.fromDateTime(election.startTime!);
+    _endTime = TimeOfDay.fromDateTime(election.endTime!);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Create Election")),
+      appBar: AppBar(title: Text("Modify Election")),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Form(
@@ -73,8 +78,9 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
                         TextFormField(
                           initialValue: candidate.description,
                           decoration: InputDecoration(labelText: "Description"),
-                          onChanged: (value) => election
-                              .listCandidates![index].description = value,
+                          onChanged: (value) =>
+                              election.listCandidates![index].description =
+                                  value,
                         ),
                         TextFormField(
                           initialValue: candidate.imageUrl,
@@ -84,10 +90,11 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
                         ),
                         TextFormField(
                           initialValue: candidate.contactInformation,
-                          decoration:
-                              InputDecoration(labelText: "Contact Information"),
-                          onChanged: (value) => election.listCandidates![index]
-                              .contactInformation = value,
+                          decoration: InputDecoration(
+                              labelText: "Contact Information"),
+                          onChanged: (value) =>
+                              election.listCandidates![index]
+                                  .contactInformation = value,
                         ),
                         IconButton(
                           icon: Icon(Icons.delete),
@@ -149,11 +156,7 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
       election.listCandidates!.add(ListCandidate());
     });
   }
-  void _clearListCandidates() {
-    setState(() {
-      election.listCandidates = [];
-    });
-  }
+
   void _submitForm(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -173,7 +176,6 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
         _endTime.hour,
         _endTime.minute,
       );
-
       bool isSuccess =
           await Provider.of<ElectionViewModel>(context, listen: false)
               .saveElection(accessToken!, election);
@@ -181,22 +183,12 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
         showAlertDialog(
                 context: context,
                 title: 'Success',
-                content: 'Create Election Successfully',
+                content: 'Modify Election Successfully',
                 defaultActionText: 'OK')
             .then((_) {
-          // Add this line
-          // Reset all the controllers and date time variables here
-          titleController.clear();
-          descriptionController.clear();
-          _startDate = DateTime.now();
-          _endDate = DateTime.now();
-          _startTime = TimeOfDay.now();
-          _endTime = TimeOfDay.now();
-          election.listCandidates=[];
-         _clearListCandidates;
+          Navigator.pop(context);
         });
       }
-    
     }
   }
 }

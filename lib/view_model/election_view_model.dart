@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/utils/entityError.dart';
 import 'package:flutter_application/models/election.dart';
 import 'package:flutter_application/services/api_status.dart';
 import 'package:flutter_application/services/election_services.dart';
+import 'package:flutter_application/utils/entityError.dart';
 
 class ElectionViewModel extends ChangeNotifier {
   bool _loading = false;
@@ -67,17 +67,24 @@ class ElectionViewModel extends ChangeNotifier {
     }
     setLoading(false);
   }
-  Future<void> saveElection(String accessToken, ElectionModel election) async {
+
+  Future<bool> saveElection(String accessToken, ElectionModel election) async {
     setLoading(true);
     var response = await ElectionServices.saveElection(accessToken, election);
     if (response is Success) {
       _electionListModel.add(response.response as ElectionModel);
+      setLoading(false);
+      return true;
     } else if (response is Failure) {
       EntityError electionError = EntityError(
           code: response.code, message: response.errorResponse.toString());
       setElectionError(electionError);
+      setLoading(false);
+      return false;
+    } else {
+      setLoading(false);
+      return false;
     }
-    setLoading(false);
   }
 
   Future<void> deleteElection(String accessToken, String electionId) async {
@@ -85,7 +92,8 @@ class ElectionViewModel extends ChangeNotifier {
     var response =
         await ElectionServices.deleteElection(accessToken, electionId);
     if (response is Success) {
-      _electionListModel.removeWhere((election) => election.id.toString() == electionId);
+      _electionListModel
+          .removeWhere((election) => election.id.toString() == electionId);
     } else if (response is Failure) {
       EntityError electionError = EntityError(
           code: response.code, message: response.errorResponse.toString());

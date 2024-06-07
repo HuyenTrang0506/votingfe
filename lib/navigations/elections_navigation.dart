@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/view/elections/add_election_screen.dart';
 import 'package:flutter_application/view/elections/elections_screen.dart';
+import 'package:flutter_application/view/elections/join_election.dart';
+import 'package:flutter_application/view/elections/modify_election_screen.dart';
+import 'package:flutter_application/view/elections/poll/example_polls.dart';
 
 class ElectionNavigator extends StatefulWidget {
   const ElectionNavigator({super.key});
@@ -20,13 +23,16 @@ class ElectionNavigatorState extends State<ElectionNavigator> {
         return MaterialPageRoute(
           settings: settings,
           builder: (BuildContext context) {
+            if (settings.name == "/joinElection"){
+              return PollScreen();
+            }
             if (settings.name == "/createElection") {
               //use addElection
               return CreatePollScreen();
             }
             if (settings.name == "/modifyElection") {
               //use selectedElection
-              return CreatePollScreen();
+              return ModifyPollScreen();
             }
             return ElectionScreen();
           },

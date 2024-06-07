@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/mainwrapper.dart';
 import 'package:flutter_application/view/auth/signin_screen.dart';
+import 'package:flutter_application/view/auth/welcome_screen.dart';
 import 'package:flutter_application/view_model/auth_view_model.dart';
 import 'package:flutter_application/view_model/election_view_model.dart';
 import 'package:flutter_application/view_model/user_view_model.dart';
