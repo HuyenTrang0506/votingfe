@@ -23,7 +23,7 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
   TimeOfDay _endTime = TimeOfDay.now();
 
   String? get accessToken =>
-      context.read<AuthViewModel>().userModel.accessToken;
+      context.read<AuthViewModel>().userCurrentModel.accessToken;
 
   @override
   void initState() {
@@ -149,11 +149,13 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
       election.listCandidates!.add(ListCandidate());
     });
   }
+
   void _clearListCandidates() {
     setState(() {
       election.listCandidates = [];
     });
   }
+
   void _submitForm(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -192,11 +194,10 @@ class _CreatePollScreenState extends State<CreatePollScreen> {
           _endDate = DateTime.now();
           _startTime = TimeOfDay.now();
           _endTime = TimeOfDay.now();
-          election.listCandidates=[];
-         _clearListCandidates;
+          election.listCandidates = [];
+          _clearListCandidates;
         });
       }
-    
     }
   }
 }

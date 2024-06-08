@@ -18,7 +18,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       String? accessToken = Provider.of<AuthViewModel>(context, listen: false)
-          .userModel
+          .userCurrentModel
           .accessToken;
       if (accessToken != null) {
         Provider.of<ElectionViewModel>(context, listen: false)
@@ -63,7 +63,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           if (DateTime.now().isAfter(electionModel.endTime!)) {
             return ElectionListRow(
               election: electionModel,
-              currentUser: context.read<AuthViewModel>().userModel,
+              currentUser: context.read<AuthViewModel>().userCurrentModel,
               onTap: () {},
               onDelete: () {},
             );

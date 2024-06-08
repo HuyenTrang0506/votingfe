@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/view_model/auth_view_model.dart';
 import 'package:provider/provider.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthViewModel>(
@@ -15,20 +15,20 @@ class ProfileScreen extends StatelessWidget {
                 CircleAvatar(
                   radius: 50,
                   backgroundImage:
-                      NetworkImage(model.userModel.avatarUrl ?? ''),
+                      NetworkImage(model.userCurrentModel.avatarUrl ?? ''),
                 ),
-                Text(model.userModel.fullname ?? ''),
+                Text(model.userCurrentModel.fullname ?? ''),
                 IconButton(
                   icon: Icon(Icons.edit),
                   onPressed: () {
                     // Navigate to edit profile screen
                   },
                 ),
-                Text(model.userModel.email ?? ''),
-                Text(model.userModel.pro == true
+                Text(model.userCurrentModel.email ?? ''),
+                Text(model.userCurrentModel.pro == true
                     ? "Premium Version"
                     : "Not Premium Version"),
-                if (model.userModel.pro == false)
+                if (model.userCurrentModel.pro == false)
                   ElevatedButton(
                     onPressed: () {
                       // Navigate to upgrade screen

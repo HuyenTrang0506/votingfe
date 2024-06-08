@@ -24,7 +24,7 @@ class UserModel {
     this.avatarUrl,
     this.roles,
     this.password,
-    this.pro,
+    this.pro = false,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -38,8 +38,8 @@ class UserModel {
           ? []
           : List<String>.from(json["roles"].map((x) => x)),
       password: json["password"],
-      pro: json[
-          "pro"], // Bạn có thể không lưu password trong JSON tùy theo yêu cầu bảo mật
+      pro: json["pro"] ??
+          false, // Bạn có thể không lưu password trong JSON tùy theo yêu cầu bảo mật
     );
   }
 
@@ -51,8 +51,8 @@ class UserModel {
         "avatarUrl": avatarUrl,
         "roles": roles == null ? [] : List<dynamic>.from(roles!.map((x) => x)),
         "password": password,
-        "pro":
-            pro, // Bạn có thể không xuất password ra JSON tùy theo yêu cầu bảo mật
+        "pro": pro ??
+            false, // Bạn có thể không xuất password ra JSON tùy theo yêu cầu bảo mật
       };
 
   // Phương thức từ JSON cho đăng ký

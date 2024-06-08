@@ -129,7 +129,8 @@ class SignInScreen extends StatelessWidget {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () async {
-                            await authViewModel.signIn(authViewModel.userModel);
+                            await authViewModel
+                                .signIn(authViewModel.userCurrentModel);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xFF416FDF),
@@ -138,7 +139,8 @@ class SignInScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
-                          child: const Text('Sign in',
+                          child: const Text(
+                            'Sign in',
                             style: TextStyle(color: Colors.white),
                           ),
                         ),

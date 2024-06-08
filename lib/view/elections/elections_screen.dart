@@ -22,11 +22,11 @@ class _ElectionScreenState extends State<ElectionScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       String? accessToken = Provider.of<AuthViewModel>(context, listen: false)
-          .userModel
+          .userCurrentModel
           .accessToken;
       if (accessToken != null) {
-        Provider.of<ElectionViewModel>(context, listen: false)
-            .getElections(accessToken); // Adjusted to use Provider for consistency
+        Provider.of<ElectionViewModel>(context, listen: false).getElections(
+            accessToken); // Adjusted to use Provider for consistency
       }
     });
   }
@@ -50,7 +50,7 @@ class _ElectionScreenState extends State<ElectionScreen> {
           IconButton(
             onPressed: () async {
               String? accessToken =
-                  context.read<AuthViewModel>().userModel.accessToken;
+                  context.read<AuthViewModel>().userCurrentModel.accessToken;
               if (accessToken != null) {
                 electionsViewModel.getElections(accessToken);
               }
@@ -82,27 +82,27 @@ class _ElectionScreenState extends State<ElectionScreen> {
     return Expanded(
       child: ListView.separated(
         itemBuilder: (context, index) {
-          ElectionModel electionModel = electionsViewModel.electionListModel[index];
+          ElectionModel electionModel =
+              electionsViewModel.electionListModel[index];
 
           return ElectionListRow(
             election: electionModel,
             onTap: () async {
-              UserModel currentUser = context.read<AuthViewModel>().userModel;
-               electionsViewModel.setSelectedElection(electionModel);
-               if  (currentUser.roles!.contains('ROLE_ADMIN')){                 
-                  Navigator.pushNamed(context, '/modifyElection');
-               } else{
-                  electionsViewModel.setSelectedElection(electionModel);
-                   Navigator.pushNamed(context, '/joinElection');
-               }
-              
-             
-            },currentUser: context.read<AuthViewModel>().userModel,
+              UserModel currentUser =
+                  context.read<AuthViewModel>().userCurrentModel;
+              electionsViewModel.setSelectedElection(electionModel);
+              if (currentUser.roles!.contains('ROLE_ADMIN')) {
+                Navigator.pushNamed(context, '/modifyElection');
+              } else {
+                electionsViewModel.setSelectedElection(electionModel);
+                Navigator.pushNamed(context, '/joinElection');
+              }
+            },
+            currentUser: context.read<AuthViewModel>().userCurrentModel,
             onDelete: () async {
               String? accessToken =
-                  context.read<AuthViewModel>().userModel.accessToken;
+                  context.read<AuthViewModel>().userCurrentModel.accessToken;
               if (accessToken != null) {
-                
                 electionsViewModel.deleteElection(
                     accessToken, electionModel.id.toString());
               }
@@ -114,6 +114,4 @@ class _ElectionScreenState extends State<ElectionScreen> {
       ),
     );
   }
-
-  
 }

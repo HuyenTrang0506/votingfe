@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_application/models/user.dart';
@@ -46,6 +47,32 @@ class UserServices {
 
       if (response.statusCode == 200) {
         return Success(response: 'User deleted successfully');
+      } else {
+        return Failure(
+            code: USER_INVALID_RESPONSE, errorResponse: 'Invalid response');
+      }
+    } on HttpException {
+      return Failure(
+          code: NO_INTERNET, errorResponse: 'No Internet Connection');
+    } on SocketException {
+      return Failure(
+          code: NO_INTERNET, errorResponse: 'No Internet Connection');
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: 'Invalid Format');
+    } catch (e) {
+      return Failure(code: UNKNOWN_ERROR, errorResponse: 'Unknown Error');
+    }
+  }
+
+  static Future<Object> changePro(String accessToken, String userId) async {
+    try {
+      var url = Uri.parse('$USER_LIST/pro/$userId');
+      final response = await http.patch(url, headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $accessToken",
+      });
+      if (response.statusCode == 200) {
+        return Success(response: UserModel.fromJson(jsonDecode(response.body)));
       } else {
         return Failure(
             code: USER_INVALID_RESPONSE, errorResponse: 'Invalid response');

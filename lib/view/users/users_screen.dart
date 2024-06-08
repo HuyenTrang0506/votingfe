@@ -19,7 +19,7 @@ class _UsersScreenState extends State<UsersScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       String? accessToken = Provider.of<AuthViewModel>(context, listen: false)
-          .userModel
+          .userCurrentModel
           .accessToken;
       if (accessToken != null) {
         Provider.of<UsersViewModel>(context, listen: false)
@@ -46,7 +46,7 @@ class _UsersScreenState extends State<UsersScreen> {
           IconButton(
             onPressed: () async {
               String? accessToken =
-                  context.read<AuthViewModel>().userModel.accessToken;
+                  context.read<AuthViewModel>().userCurrentModel.accessToken;
 
               if (accessToken != null) {
                 usersViewModel.getUsers(accessToken);
@@ -89,14 +89,13 @@ class _UsersScreenState extends State<UsersScreen> {
             },
             onDelete: () {
               String? accessToken =
-                  context.read<AuthViewModel>().userModel.accessToken;
+                  context.read<AuthViewModel>().userCurrentModel.accessToken;
               if (accessToken != null) {
                 usersViewModel.setSelectedUser(userModel);
                 print("delete ");
 
                 usersViewModel.deleteUser(accessToken, userModel.id.toString());
                 print(usersViewModel);
-              
               }
             },
           );

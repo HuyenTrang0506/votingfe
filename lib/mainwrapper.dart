@@ -37,7 +37,7 @@ class MainWrapperState extends State<MainWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    UserModel currentUser = context.read<AuthViewModel>().userModel;
+    UserModel currentUser = context.read<AuthViewModel>().userCurrentModel;
 
     return WillPopScope(
       onWillPop: _systemBackButtonPressed,

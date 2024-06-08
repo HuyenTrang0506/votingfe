@@ -5,7 +5,7 @@
 List polls = [
   {
     'id': 1,
-    'question': 'who is the leader of 22git1?',
+    'question': 'Who is the leader of 22git1?',
     'end_date': DateTime(2024, 6, 10),
     'options': [
       {

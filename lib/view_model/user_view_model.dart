@@ -3,6 +3,8 @@ import 'package:flutter_application/models/user.dart';
 import 'package:flutter_application/services/api_status.dart';
 import 'package:flutter_application/services/user_services.dart';
 import 'package:flutter_application/utils/entityError.dart';
+import 'package:flutter_application/view_model/auth_view_model.dart';
+import 'package:provider/provider.dart';
 
 class UsersViewModel extends ChangeNotifier {
   bool _loading = false;
@@ -77,7 +79,6 @@ class UsersViewModel extends ChangeNotifier {
     var response = await UserServices.deleteUser(accessToken, userId);
 
     if (response is Success) {
-      
       _userListModel.removeWhere((user) => user.id.toString() == userId);
       notifyListeners();
     } else if (response is Failure) {
@@ -87,6 +88,25 @@ class UsersViewModel extends ChangeNotifier {
       setUserError(userError);
     }
 
+    setLoading(false);
+  }
+
+  Future<void> changePro(String accessToken, String userId) async {
+    setLoading(true);
+    var response = await UserServices.changePro(accessToken, userId);
+    if (response is Success) {
+      UserModel updatedUser = response.response as UserModel;
+      int index =
+          _userListModel.indexWhere((user) => user.id.toString() == userId);
+      if (index != -1) {
+        _userListModel[index] = updatedUser;
+      }
+      
+    } else if (response is Failure) {
+      EntityError userError = EntityError(
+          code: response.code, message: response.errorResponse.toString());
+      setUserError(userError);
+    }
     setLoading(false);
   }
 }

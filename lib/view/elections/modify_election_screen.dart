@@ -22,7 +22,7 @@ class _ModifyPollScreenState extends State<ModifyPollScreen> {
   TimeOfDay _endTime = TimeOfDay.now();
 
   String? get accessToken =>
-      context.read<AuthViewModel>().userModel.accessToken;
+      context.read<AuthViewModel>().userCurrentModel.accessToken;
 
   @override
   void initState() {
@@ -78,9 +78,8 @@ class _ModifyPollScreenState extends State<ModifyPollScreen> {
                         TextFormField(
                           initialValue: candidate.description,
                           decoration: InputDecoration(labelText: "Description"),
-                          onChanged: (value) =>
-                              election.listCandidates![index].description =
-                                  value,
+                          onChanged: (value) => election
+                              .listCandidates![index].description = value,
                         ),
                         TextFormField(
                           initialValue: candidate.imageUrl,
@@ -90,11 +89,10 @@ class _ModifyPollScreenState extends State<ModifyPollScreen> {
                         ),
                         TextFormField(
                           initialValue: candidate.contactInformation,
-                          decoration: InputDecoration(
-                              labelText: "Contact Information"),
-                          onChanged: (value) =>
-                              election.listCandidates![index]
-                                  .contactInformation = value,
+                          decoration:
+                              InputDecoration(labelText: "Contact Information"),
+                          onChanged: (value) => election.listCandidates![index]
+                              .contactInformation = value,
                         ),
                         IconButton(
                           icon: Icon(Icons.delete),

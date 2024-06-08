@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/view/auth/profile_screen.dart';
-import 'package:flutter_application/view/users/add_user_screen.dart';
-
-import 'package:flutter_application/view/users/user_details_screen.dart';
-import 'package:flutter_application/view/users/users_screen.dart';
+import 'package:flutter_application/view/users/profile/involve.dart';
+import 'package:flutter_application/view/users/profile/profile.dart';
 
 class ProfileNavigator extends StatefulWidget {
   const ProfileNavigator({super.key});
 
   @override
- ProfileNavigatorState createState() => ProfileNavigatorState();
+  ProfileNavigatorState createState() => ProfileNavigatorState();
 }
 
 GlobalKey<NavigatorState> profileNavigatorKey = GlobalKey<NavigatorState>();
 
-class ProfileNavigatorState  extends State<ProfileNavigator> {
+class ProfileNavigatorState extends State<ProfileNavigator> {
   @override
   Widget build(BuildContext context) {
     return Navigator(
@@ -23,7 +20,9 @@ class ProfileNavigatorState  extends State<ProfileNavigator> {
         return MaterialPageRoute(
           settings: settings,
           builder: (BuildContext context) {
-           
+            if (settings.name == "/bill") {
+              return bill();
+            }
             return ProfileScreen();
           },
         );

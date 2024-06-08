@@ -15,11 +15,11 @@ class AuthViewModel extends ChangeNotifier {
   GlobalKey<FormState> get formKey => _formKey;
   bool _loading = false;
   EntityError? _authError;
-  UserModel _userModel = UserModel();
+  UserModel _userCurrentModel = UserModel();
 
   bool get loading => _loading;
   EntityError? get authError => _authError;
-  UserModel get userModel => _userModel;
+  UserModel get userCurrentModel => _userCurrentModel;
 
   setLoading(bool loading) async {
     _loading = loading;
@@ -30,15 +30,15 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   void setFullName(String fullName) {
-    _userModel.fullname = fullName;
+    _userCurrentModel.fullname = fullName;
   }
 
   void setEmail(String email) {
-    _userModel.email = email;
+    _userCurrentModel.email = email;
   }
 
   void setPassword(String pass) {
-    _userModel.password = pass;
+    _userCurrentModel.password = pass;
   }
 
   void toggleRememberPassword(bool? value) {
@@ -50,7 +50,7 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   setUserModel(UserModel userModel) {
-    _userModel = userModel;
+    _userCurrentModel = userModel;
   }
 
   Future<void> signUp(UserModel user) async {
@@ -71,12 +71,11 @@ class AuthViewModel extends ChangeNotifier {
   Future<void> signIn(UserModel user) async {
     setLoading(true);
 
-
-var response = await AuthService.signIn(user);
+    var response = await AuthService.signIn(user);
     setAuthenticated(true);
-   
+
     print(response);
-    
+
     if (response is Success) {
       _isAuthenticated = true;
       notifyListeners();
